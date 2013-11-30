@@ -5,6 +5,8 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.magnos.reflect.impl.ReflectArray;
+import org.magnos.reflect.impl.ReflectEnum;
 import org.magnos.reflect.impl.ReflectMethod;
 import org.magnos.reflect.impl.ReflectNull;
 import org.magnos.reflect.impl.ReflectObject;
@@ -23,7 +25,7 @@ public class ReflectFactory
 
     private static ReflectFactoryListener listener;
 
-    @SuppressWarnings ("unchecked" )
+    @SuppressWarnings ({ "unchecked", "rawtypes" } )
     public static <T> Reflect<T> create( Object o )
     {
         if (o == null)
@@ -42,6 +44,32 @@ public class ReflectFactory
             {
                 return reflect;
             }
+        }
+        else if (o.getClass().isArray())
+        {
+        	Reflect<T> reflect = ReflectRegistry.get( o.getClass() );
+        	
+        	if (reflect == null)
+        	{
+        		reflect = new ReflectArray( o.getClass() );
+        		
+        		ReflectRegistry.add( reflect );
+        	}
+        	
+        	return reflect;
+        }
+        else if (o.getClass().isEnum())
+        {
+        	Reflect<T> reflect = ReflectRegistry.get( o.getClass() );
+        	
+        	if (reflect == null)
+        	{
+        		reflect = new ReflectEnum( o.getClass() );
+        		
+        		ReflectRegistry.add( reflect );
+        	}
+        	
+        	return reflect;
         }
 
         Reflect<T> reflect = ReflectRegistry.get( o.getClass() );
