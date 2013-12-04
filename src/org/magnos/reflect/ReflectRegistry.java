@@ -13,7 +13,6 @@ import org.magnos.reflect.impl.ReflectByte;
 import org.magnos.reflect.impl.ReflectByteObject;
 import org.magnos.reflect.impl.ReflectChar;
 import org.magnos.reflect.impl.ReflectCharObject;
-import org.magnos.reflect.impl.ReflectClass;
 import org.magnos.reflect.impl.ReflectCollection;
 import org.magnos.reflect.impl.ReflectDate;
 import org.magnos.reflect.impl.ReflectDouble;
@@ -76,7 +75,7 @@ public class ReflectRegistry
         add( new ReflectString() );
         add( new ReflectDate() );
         add( new ReflectUUID() );
-        add( new ReflectClass() );
+//        add( new ReflectClass() );
         add( new ReflectCollection() );
 
         alias( Collection.class, ReflectCollection.getCollectionTypes() );

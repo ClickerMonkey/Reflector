@@ -13,6 +13,7 @@ import org.magnos.reflect.ReflectFactory;
 public class ReflectMethod implements Reflect<Object[]>
 {
 
+	private final Method method;
     private final Reflect<Object>[] reflects;
     private final int maxSize;
 
@@ -49,6 +50,7 @@ public class ReflectMethod implements Reflect<Object[]>
         }
 
         maxSize = calculatedMaxSize;
+        this.method = method;
     }
 
     @Override
@@ -86,7 +88,7 @@ public class ReflectMethod implements Reflect<Object[]>
 
         for (int i = 0; i < reflects.length; i++)
         {
-            size += reflects[i].sizeOf( v[i] );
+       		size += reflects[i].sizeOf( v[i] );	
         }
 
         return size;
@@ -109,7 +111,12 @@ public class ReflectMethod implements Reflect<Object[]>
         return reflects;
     }
     
-    public static class MethodComparator implements Comparator<Method>
+    public Method getMethod()
+	{
+		return method;
+	}
+
+	public static class MethodComparator implements Comparator<Method>
     {
         @Override
         public int compare( Method a, Method b )

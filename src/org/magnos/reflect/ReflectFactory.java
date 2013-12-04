@@ -36,50 +36,34 @@ public class ReflectFactory
         {
             return (Reflect<T>)addMethod( (Method)o );
         }
-        else if (o instanceof Class)
-        {
-            Reflect<T> reflect = ReflectRegistry.get( (Class<?>)o );
-            
-            if (reflect != null)
-            {
-                return reflect;
-            }
-        }
-        else if (o.getClass().isArray())
-        {
-        	Reflect<T> reflect = ReflectRegistry.get( o.getClass() );
-        	
-        	if (reflect == null)
-        	{
-        		reflect = new ReflectArray( o.getClass() );
-        		
-        		ReflectRegistry.add( reflect );
-        	}
-        	
-        	return reflect;
-        }
-        else if (o.getClass().isEnum())
-        {
-        	Reflect<T> reflect = ReflectRegistry.get( o.getClass() );
-        	
-        	if (reflect == null)
-        	{
-        		reflect = new ReflectEnum( o.getClass() );
-        		
-        		ReflectRegistry.add( reflect );
-        	}
-        	
-        	return reflect;
-        }
-
-        Reflect<T> reflect = ReflectRegistry.get( o.getClass() );
-
+        
+        Class<?> oclass = (o instanceof Class ? (Class<?>)o : o.getClass());
+        
+        Reflect<T> reflect = ReflectRegistry.get( oclass );
+        
         if (reflect != null)
         {
-            return reflect;
+        	return reflect;
+        }
+        
+        if (oclass.isArray())
+        {
+       		reflect = new ReflectArray( oclass );
+        		
+       		ReflectRegistry.add( reflect );
+        }
+        else if (oclass.isEnum())
+        {
+       		reflect = new ReflectEnum( oclass );
+        		
+       		ReflectRegistry.add( reflect );
+        }
+        else
+        {
+        	reflect = (Reflect<T>)addObject( oclass );
         }
 
-        return (Reflect<T>)addObject( o.getClass() );
+        return reflect;
     }
 
     public static ReflectObject addObject( Class<?> c )
